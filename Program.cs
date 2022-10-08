@@ -4,6 +4,7 @@ namespace XOR_Neural_Network
 {
     internal class Program
     {
+
         static void Main(string[] args)
         {
             double[][] inputs = new double[][]
@@ -23,9 +24,20 @@ namespace XOR_Neural_Network
 
             Random random = new Random();
 
-            NeuralNetwork.NeuralNetwork neuralNetwork = new NeuralNetwork.NeuralNetwork(ActivationAndErrorFunctions.TanHActivationFunction, ActivationAndErrorFunctions.MeanSqauredErrorFunction, 2, 2, 1);
-            neuralNetwork.Randomize(random, -1, 1);
-            while (true)
+
+            Console.WriteLine("Please input a size for the population of the neural network");
+            int size = int.Parse(Console.ReadLine());
+
+            NeuralNetwork.NeuralNetwork[] population = new NeuralNetwork.NeuralNetwork[size];
+            for (int i = 0; i < size; i++)
+            {
+                population[i] = new NeuralNetwork.NeuralNetwork(ActivationAndErrorFunctions.TanHActivationFunction, ActivationAndErrorFunctions.MeanSqauredErrorFunction, 2, 2, 1);
+                population[i].Randomize(random, -1, 1);
+            }
+
+
+
+            /*while (true)
             {
                 Console.SetCursorPosition(0, 0);
                 for (int i = 0; i < inputs.Length; i++)
@@ -43,9 +55,26 @@ namespace XOR_Neural_Network
                     Console.Write(" Output: " + Math.Round(neuralNetwork.Compute(inputs[i])[0], 3));
                     Console.WriteLine();
                 }
+            }*/
+        }
 
-                Console.WriteLine("Hello, World!");
+        public static double Fitness(NeuralNetwork.NeuralNetwork network, double[][] inputs, double[] outputs)
+        {
+            double fitness = 0;
+            for (int i = 0; i < inputs.Length; i++)
+            {
+                fitnses = 
             }
+
+            //FINISH the fitness function.
+            return fitness;
+        }
+
+        public static void RunTraining(NeuralNetwork.NeuralNetwork[] population, Random random, )
+        {
+            (NeuralNetwork.NeuralNetwork network, double fitness)[] fitnessRecords = new (NeuralNetwork.NeuralNetwork network, double fitness)[population.Length];
+
+
         }
     }
 }
