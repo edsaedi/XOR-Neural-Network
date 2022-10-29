@@ -1,4 +1,5 @@
 ﻿using NeuralNetwork;
+using System.Linq;
 
 namespace XOR_Neural_Network
 {
@@ -132,11 +133,24 @@ namespace XOR_Neural_Network
                     Console.WriteLine(outputs[j][0] + ", ");
                 }
 
-                var fitnesS = Fitness(outputs);
+                var temporaryFitness = Fitness(outputs);
 
-                fitnessRecords[i].fitness = fitnesS;
-                Console.WriteLine("Fitness: " + fitnesS + "\n");
+                fitnessRecords[i].fitness = temporaryFitness;
+                Console.WriteLine("Fitness: " + temporaryFitness + "\n");
+
+                if (temporaryFitness == 0)
+                {
+                    Console.WriteLine("Eureka, I have found it!");
+                    //Add code for it to be the network.
+                    return;
+                }
             }
+
+            fitnessRecords = fitnessRecords.OrderBy(networkTuple => networkTuple.fitness).ToArray();
+
+            
+
+            Console.WriteLine("Sorted");
         }
     }
 }
