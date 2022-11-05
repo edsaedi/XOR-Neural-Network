@@ -148,7 +148,26 @@ namespace XOR_Neural_Network
 
             fitnessRecords = fitnessRecords.OrderBy(networkTuple => networkTuple.fitness).ToArray();
 
-            
+            int amountTrained = 0;
+            while (fitnessRecords[0].fitness > 0.10)
+            {
+                GeneticAlgorithm.Train(fitnessRecords, random, mutationRate, -1, 1, true);
+                amountTrained++;
+
+                if (amountTrained % 100 == 0)
+                {
+
+                    Console.WriteLine("Outputs: " + amountTrained);
+                    var outputs = fitnessRecords[0].network.Compute(inputs);
+
+                    for (int j = 0; j < outputs.Length; j++)
+                    {
+                        Console.WriteLine(outputs[j][0] + ", ");
+                    }
+
+                    Console.WriteLine("Fitness: " + fitnessRecords[0].fitness + "\n");
+                }
+            }
 
             Console.WriteLine("Sorted");
         }
