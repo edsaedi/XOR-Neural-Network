@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace XOR_Neural_Network
 {
-    internal class Program
+    public class Program
     {
 
         static void Main(string[] args)
@@ -36,42 +36,8 @@ namespace XOR_Neural_Network
                 population[i].Randomize(random, -1, 1);
             }
 
+
             RunTraining(population, random, 2, inputs);
-
-
-            //for (int j = 0; j < 5; j++)
-            //{
-            //    double[] testers = new double[4];
-            //    Console.WriteLine("Here are the outputs: ");
-
-            //    for (int k = 0; k < 4; k++)
-            //    {
-            //        var temp = random.NextDouble();
-            //        testers[k] = temp;
-            //        Console.Write(temp + ", ");
-            //    }
-
-            //    Console.WriteLine("Fitness: " + Fitness(testers));
-            //}
-            /*while (true)
-            {
-                Console.SetCursorPosition(0, 0);
-                for (int i = 0; i < inputs.Length; i++)
-                {
-                    Console.Write("Inputs: ");
-                    for (int j = 0; j < inputs[i].Length; j++)
-                    {
-                        if (j != 0)
-                        {
-                            Console.Write(", ");
-                        }
-                        Console.Write(inputs[i][j]);
-                    }
-
-                    Console.Write(" Output: " + Math.Round(neuralNetwork.Compute(inputs[i])[0], 3));
-                    Console.WriteLine();
-                }
-            }*/
         }
 
         public static double Fitness(double[][] outputs)
@@ -92,31 +58,6 @@ namespace XOR_Neural_Network
 
             return fitness / 4;
         }
-
-        //public static double Fitness(NeuralNetwork.NeuralNetwork network, double[][] inputs)
-        //{
-        //    double fitness = 0;
-
-        //    for (int i = 0; i < inputs.Length; i++)
-        //    {
-        //        double[] outputs = network.Compute(inputs[i]);
-        //        //For output 1
-        //        fitness += (outputs[0]);
-
-        //        fitness += (network.Compute(inputs[i]))[0];
-
-        //        //For output 2
-        //        fitness += Math.Abs(1 - outputs[1]);
-
-        //        //For output 3
-        //        fitness += Math.Abs(1 - outputs[2]);
-
-        //        //For output 4
-        //        fitness += outputs[3];
-        //    }
-
-        //    return fitness;
-        //}
 
         public static void RunTraining(NeuralNetwork.NeuralNetwork[] population, Random random, double mutationRate, double[][] inputs)
         {
@@ -149,7 +90,7 @@ namespace XOR_Neural_Network
             fitnessRecords = fitnessRecords.OrderBy(networkTuple => networkTuple.fitness).ToArray();
 
             int amountTrained = 0;
-            while (fitnessRecords[0].fitness > 0.10)
+            while (fitnessRecords[0].fitness != 0)
             {
                 GeneticAlgorithm.Train(fitnessRecords, random, mutationRate, -1, 1, true);
                 amountTrained++;
@@ -157,14 +98,22 @@ namespace XOR_Neural_Network
                 if (amountTrained % 100 == 0)
                 {
 
-                    Console.WriteLine("Outputs: " + amountTrained);
-                    var outputs = fitnessRecords[0].network.Compute(inputs);
+                    Console.WriteLine("Outputs: " + amountTrained + " Times trained");
 
-                    for (int j = 0; j < outputs.Length; j++)
+                    for (int i = 0; i < population.Length; i++)
                     {
-                        Console.WriteLine(outputs[j][0] + ", ");
-                    }
+                        var outputs = fitnessRecords[i].network.Compute(inputs);
+                        fitnessRecords[i].fitness = Fitness(outputs);
 
+                        //Prints the best neural network fitness
+                        if (i == 0)
+                        {
+                            for (int j = 0; j < outputs.Length; j++)
+                            {
+                                Console.WriteLine(outputs[j][0] + ", ");
+                            }
+                        }
+                    }
                     Console.WriteLine("Fitness: " + fitnessRecords[0].fitness + "\n");
                 }
             }
